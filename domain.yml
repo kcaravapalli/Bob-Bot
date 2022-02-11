@@ -1,0 +1,112 @@
+intents:
+  - greet
+  - create
+  - thanks
+  - goodbye
+  - application
+  - summary
+  - priority_level
+  - workdays
+  - mail
+  - affirm
+  - stop
+  - deny
+  - out_of_scope
+  - non_compliant
+
+
+
+entities:
+  - application_name
+  - issue_summary
+  - priority
+  - estimate
+  - email_id
+ 
+
+
+forms:
+ - create_form
+
+
+
+
+
+slots:
+  application_name:
+    type: unfeaturized
+    auto_fill: false
+  issue_summary:
+    type: unfeaturized
+    auto_fill: false
+  priority:
+    type: unfeaturized
+    auto_fill: false
+  estimate:
+    type: unfeaturized
+    auto_fill: false
+  email_id:
+    type: unfeaturized
+    auto_fill: false
+
+
+    
+actions:
+ - action_slot_reset    
+
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_how_can_i_help:
+  - text: "What can I do for you today?"
+
+  utter_affirm:
+  - text: "Sure, I will do that for you."
+
+  utter_ask_application_name:
+  - text: "Please enter the application name where you are facing this issue"
+
+  utter_ask_issue_summary:
+  - text: "Please describe the issue you are facing in brief"
+
+  utter_ask_priority:
+    - text: "what would be the priority for this incident?"
+
+  utter_ask_estimate:
+    - text: "by when would you need this resolved. any ballpark estimate?"
+
+  utter_ask_email_id:
+    - text: "please share your email_id"
+
+  utter_confusion:
+  - text: I do not understand that.
+  
+  utter_ask_continue:
+  - text: This information is required in order to help you with your task.Can you please provide these informations
+
+  utter_slots_values:
+    - text: "I am going to create an Incident for you using the following parameters:\n
+             - application: {application_name}\n
+             - issue_summary: {issue_summary}\n
+             - priority: {priority}\n
+             - estimate: {estimate}\n
+             - mail: {email_id}"
+ 
+
+ 
+  utter_item_created:
+  - text: "An incident numbered 158834 is logged for you"
+
+  utter_happy:
+  - text: "Happy to help"
+
+
+  utter_goodbye:
+  - text: "Bye"
+
+
+
+session_config:
+  session_expiration_time: 60  # value in minutes
+  carry_over_slots_to_new_session: true

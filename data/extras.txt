@@ -1,0 +1,241 @@
+
+## slot_mapping class
+
+
+
+    def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
+        """A dictionary to map required slots to
+            - an extracted entity
+            - intent: value pairs
+            - a whole message
+        or a list of them, where a first match will be picked."""
+
+        return {
+            "application_name": [self.from_entity(entity="application_name", intent=["inform", "request_restaurant"] ),],
+            "priority":self.from_entity(entity="priority"),"Estimate":self.from_entity(entity="estimate"),"feedback": [self.from_entity(entity="feedback"),"Issue_summary": [self.from_entity(entity="issue_summary"),"Email_id": [self.from_entity(entity="email_id")
+        }
+
+
+
+
+################ story examples 
+## stop but continue path
+* create
+    - create_form
+    - form{"name": "create_form"}
+* stop
+    - utter_ask_continue
+* affirm
+    - create_form
+    - form{"name": null}
+    - utter_slots_values
+* thanks
+  - utter_happy
+* goodbye
+  - utter_goodbye
+
+## stop and stop path
+* create
+    - create_form
+    - form{"name": "create_form"}
+* stop
+    - utter_ask_continue
+* deny
+    - action_deactivate_form
+* thanks
+  - utter_happy
+################ story examples 
+
+
+
+
+
+actions:
+- utter_greet
+- utter_how_can_i_help
+- utter_goodbye
+- utter_application_detail
+- utter_issue_summary
+- utter_affirm
+- utter_item_created
+- utter_happy
+
+
+forms:
+ create_form:
+  application_name:
+  - type: from_entity
+     entity: application_name
+     intent: [inform, create]
+        
+
+
+
+
+        
+  Issue_summary:
+  - type: from_entity
+     entity: Issue_summary
+        
+  Priority:
+     - type: from_entity
+       entity: Priority
+
+  Estimate:
+     - type: from_intent
+       entity: Estimate
+
+  feedback:
+     - type: from_entity
+       entity: feedback
+    
+  Email_id:
+     - type: from_entity
+       entity: Email_id
+ 
+
+
+
+## story create1.0
+* greet
+  - utter_greet
+  - utter_how_can_i_help
+* create
+  - utter_affirm
+  - utter_application_detail
+* application_name
+  - utter_issue_summary
+* issue
+  - utter_item_created
+* thanks
+  - utter_happy
+* goodbye
+  - utter_goodbye
+
+
+
+## intent:application_name
+
+- Forcasting
+- KMI
+- FRED
+- Eclipse
+- Sharepoint
+
+
+## intent:issue
+
+- Forcasting calculations incorrect
+- KMI needs a new table and a set of columns that could be further used for KMI reports
+- FRED data issue 
+- Eclipse out of sync with the source
+- Sharepoint link broken
+
+
+
+
+
+
+
+
+
+-----
+- i m looking for incident [incident number](find)
+- i m looking for jira [jira number](find)
+- i m looking for change request [change request](find)
+- what is the status of this [incident](status)
+- what is the status of this [jira](status)
+- what is the status of this [change_request](status)
+
+
+
+
+## story status1.0
+* greet
+  - utter_greet
+  - utter_how_can_i_help
+* status{'item_type':CR}
+  - affirm
+  - item_status{'UID_Incident':158834}
+* thanks
+  - utter_goodbye
+
+
+  
+## story status1.1
+* greet
+  - utter_greet
+  - utter_how_can_i_help
+* status{'item_type':CR}
+  - affirm
+  - item_status{'UID_JIRA':AMS-279}
+* thanks
+  - utter_goodbye
+
+  
+## story status1.2
+* greet
+  - utter_greet
+  - utter_how_can_i_help
+* status{'item_type':CR}
+  - affirm
+  - item_status{'UID_CR':CR-152}
+* thanks
+  - utter_goodbye
+
+## intent:item_status
+- [158834](UID_Incident) you are looking for is open 
+- [158834](UID_Incident) you are looking for is closed
+- [158834](UID_Incident) you are looking for is awaiting user validation
+- [158834](UID_Incident) you are looking for is implemented
+- [158834](UID_Incident) you are looking for is cancelled
+- [158834](UID_Incident) you are looking for is on hold
+- [158834](UID_Incident) you are looking for is waiting to be picked up for analysis
+- [AMS-279](UID_JIRA) you are looking for is open 
+- [AMS-279](UID_JIRA) you are looking for is closed
+- [AMS-279](UID_JIRA) you are looking for is cancelled
+- [AMS-279](UID_JIRA) you are looking for is drafted
+- [CR-152](UID_CR) you are looking for is open 
+- [CR-152](UID_CR) you are looking for is closed
+- [CR-152](UID_CR) you are looking for is cancelled
+- [CR-152](UID_CR) you are looking for is completed
+
+
+
+
+ 
+
+## sad path 1
+* greet: hello
+  - utter_greet
+* mood_unhappy: not good
+  - utter_cheer_up
+  - utter_did_that_help
+* affirm: yes
+  - utter_happy
+
+## sad path 2
+* greet: hello
+  - utter_greet
+* mood_unhappy: not good
+  - utter_cheer_up
+  - utter_did_that_help
+* deny: not really
+  - utter_goodbye
+
+## sad path 3
+* greet: hi
+  - utter_greet
+* mood_unhappy: very terrible
+  - utter_cheer_up
+  - utter_did_that_help
+* deny: no
+  - utter_goodbye
+
+## say goodbye
+* goodbye: bye-bye!
+  - utter_goodbye
+
+## bot challenge
+* bot_challenge: are you a bot?
+  - utter_iamabot

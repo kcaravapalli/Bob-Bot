@@ -1,0 +1,27 @@
+from flask import Flask, request, render_template, make_response, redirect, url_for
+from flask_cors import CORS, cross_origin
+from flask_restful import Resource, Api
+import requests
+from json import dumps
+
+#app = Flask(__name__)
+app = Flask(__name__, template_folder='interface',
+            static_folder='interface', static_url_path='')
+api = Api(app)
+CORS(app)
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return render_template('index.html')
+
+@app.route('msg')
+def handle_msg():
+    val = str(request.args.get('text'))
+    data = dumps({"sender": "Rasa","message": val})
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    res = requests.post('http://localhost:5005/webhooks/rest/webhook', data= data, headers = headers)
+    res = res.json()
+    val = res[0]['text']
+    return val
+
+if __name__ == "__main__":
+    app.run(app)
