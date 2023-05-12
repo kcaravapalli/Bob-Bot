@@ -10,7 +10,7 @@ idna==2.5
 imutils==0.5.3
 itsdangerous==1.1.0
 Jinja2==2.11.2
-joblib==0.15.1
+joblib==1.1.1
 MarkupSafe==1.1.1
 numpy==1.19.0
 opencv-python==4.2.0.34
